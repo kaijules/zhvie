@@ -12,7 +12,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-        /* Custom scrollbar */
         ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
@@ -60,7 +59,7 @@
     <!-- Main App Body (Views Container) -->
     <main class="flex-1 relative overflow-hidden flex flex-col">
         
-        <!-- VIEW 1: PLAYER & CAPTURE (Tab 1) -->
+        <!-- VIEW 1: PLAYER & CAPTURE -->
         <div id="viewPlayer" class="absolute inset-0 flex flex-col p-3 space-y-3 overflow-y-auto">
             
             <!-- Video/Audio Container -->
@@ -115,7 +114,7 @@
             </div>
         </div>
 
-        <!-- VIEW 2: EDITOR (Tab 2) -->
+        <!-- VIEW 2: EDITOR -->
         <div id="viewEditor" class="absolute inset-0 flex flex-col p-3 space-y-2.5 hidden">
             <div class="flex items-center justify-between shrink-0">
                 <span class="text-xs text-slate-400 font-medium">Dán lời bài hát (mỗi dòng một câu):</span>
@@ -130,7 +129,7 @@
             </button>
         </div>
 
-        <!-- VIEW 3: TIMELINE LIST (Tab 3) -->
+        <!-- VIEW 3: TIMELINE LIST -->
         <div id="viewTimeline" class="absolute inset-0 flex flex-col p-3 space-y-2.5 hidden">
             <div class="flex items-center justify-between shrink-0 px-1">
                 <span class="text-xs text-slate-400">Danh sách các mốc đã tạo:</span>
@@ -329,7 +328,6 @@ Biết bao giờ gặp lại nhau?`;
             const navEditorBtn = document.getElementById('navEditorBtn');
             const navTimelineBtn = document.getElementById('navTimelineBtn');
 
-            // Reset styles
             [navPlayerBtn, navEditorBtn, navTimelineBtn].forEach(btn => {
                 btn.className = "flex flex-col items-center justify-center flex-1 h-full text-slate-400 hover:text-slate-200 transition relative";
             });
