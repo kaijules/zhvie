@@ -2,8 +2,8 @@
 <html lang="vi" class="h-full">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LyricSync Pro - Trình Tạo Lời Nhạc & Subtitle</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LyricSync Pro - Mobile Edition</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -11,217 +11,205 @@
     <!-- Google Fonts Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
         /* Custom scrollbar */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 h-full flex flex-col overflow-hidden">
+<body class="bg-slate-950 text-slate-100 h-[100dvh] flex flex-col overflow-hidden select-none">
 
-    <header class="bg-slate-800 border-b border-slate-700 px-6 py-3 flex items-center justify-between shrink-0">
-        <div class="flex items-center space-x-3">
-            <div class="bg-gradient-to-tr from-indigo-500 to-violet-500 p-2.5 rounded-xl shadow-lg shadow-indigo-500/30 text-white">
-                <i class="fa-solid fa-music text-lg"></i>
+    <!-- Mobile Header -->
+    <header class="bg-slate-900 border-b border-slate-800 px-4 py-3 flex items-center justify-between shrink-0 z-20">
+        <div class="flex items-center space-x-2.5">
+            <div class="bg-gradient-to-tr from-indigo-500 to-violet-500 p-2 rounded-xl shadow-md shadow-indigo-500/30 text-white">
+                <i class="fa-solid fa-music text-sm"></i>
             </div>
             <div>
-                <h1 class="font-bold text-lg text-white tracking-wide">LyricSync <span class="text-indigo-400">Pro</span></h1>
-                <p class="text-xs text-slate-400">Công cụ đồng bộ lời bài hát & phụ đề video chuyên nghiệp</p>
+                <h1 class="font-bold text-base text-white tracking-wide">LyricSync <span class="text-indigo-400">Pro</span></h1>
+                <p class="text-[10px] text-slate-400">Trình đồng bộ phụ đề di động</p>
             </div>
         </div>
         
-        <!-- Export & Action Dropdowns/Buttons -->
-        <div class="flex items-center space-x-3">
-            <button onclick="openModal('helpModal')" class="bg-slate-700 hover:bg-slate-600 text-slate-300 px-3.5 py-2 rounded-lg text-sm font-medium transition flex items-center space-x-2">
+        <!-- Actions -->
+        <div class="flex items-center space-x-2">
+            <button onclick="openModal('helpModal')" class="w-9 h-9 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl flex items-center justify-center text-sm transition">
                 <i class="fa-solid fa-circle-question"></i>
-                <span class="hidden sm:inline">Hướng dẫn</span>
             </button>
-            <div class="relative group">
-                <button class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition flex items-center space-x-2 shadow-lg shadow-indigo-600/30">
+            <div class="relative">
+                <button onclick="toggleExportMenu()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-2 rounded-xl text-xs font-semibold transition flex items-center space-x-1.5 shadow-md shadow-indigo-600/30">
                     <i class="fa-solid fa-download"></i>
-                    <span>Xuất file</span>
-                    <i class="fa-solid fa-chevron-down text-xs ml-1"></i>
+                    <span>Xuất</span>
                 </button>
-                <div class="absolute right-0 mt-2 w-48 bg-slate-800 border border-slate-700 rounded-xl shadow-2xl py-1 hidden group-hover:block z-50">
-                    <button onclick="exportFile('lrc')" class="w-full text-left px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-700 hover:text-white flex items-center space-x-2">
-                        <i class="fa-solid fa-file-lines text-indigo-400 w-5"></i><span>Xuất file .LRC</span>
+                <div id="exportDropdown" class="absolute right-0 mt-2 w-44 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl py-1.5 hidden z-50">
+                    <button onclick="exportFile('lrc'); toggleExportMenu();" class="w-full text-left px-4 py-2.5 text-xs text-slate-300 hover:bg-slate-800 hover:text-white flex items-center space-x-2">
+                        <i class="fa-solid fa-file-lines text-indigo-400 w-4"></i><span>Xuất file .LRC</span>
                     </button>
-                    <button onclick="exportFile('srt')" class="w-full text-left px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-700 hover:text-white flex items-center space-x-2">
-                        <i class="fa-solid fa-closed-captioning text-emerald-400 w-5"></i><span>Xuất file .SRT</span>
+                    <button onclick="exportFile('srt'); toggleExportMenu();" class="w-full text-left px-4 py-2.5 text-xs text-slate-300 hover:bg-slate-800 hover:text-white flex items-center space-x-2">
+                        <i class="fa-solid fa-closed-captioning text-emerald-400 w-4"></i><span>Xuất file .SRT</span>
                     </button>
-                    <button onclick="exportFile('json')" class="w-full text-left px-4 py-2.5 text-sm text-slate-300 hover:bg-slate-700 hover:text-white flex items-center space-x-2">
-                        <i class="fa-solid fa-code text-amber-400 w-5"></i><span>Xuất file .JSON</span>
+                    <button onclick="exportFile('json'); toggleExportMenu();" class="w-full text-left px-4 py-2.5 text-xs text-slate-300 hover:bg-slate-800 hover:text-white flex items-center space-x-2">
+                        <i class="fa-solid fa-code text-amber-400 w-4"></i><span>Xuất file .JSON</span>
                     </button>
                 </div>
             </div>
         </div>
     </header>
 
-    <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 p-4 overflow-hidden">
+    <!-- Main App Body (Views Container) -->
+    <main class="flex-1 relative overflow-hidden flex flex-col">
         
-        <!-- Left Panel: Video Player & Controls (7 cols on lg) -->
-        <div class="lg:col-span-7 flex flex-col bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 overflow-hidden backdrop-blur-sm">
+        <!-- VIEW 1: PLAYER & CAPTURE (Tab 1) -->
+        <div id="viewPlayer" class="absolute inset-0 flex flex-col p-3 space-y-3 overflow-y-auto">
             
-            <!-- Video Upload Zone / Container -->
-            <div id="uploadContainer" class="relative flex-1 bg-slate-950 rounded-xl overflow-hidden flex flex-col items-center justify-center border-2 border-dashed border-slate-700 hover:border-indigo-500 transition group min-h-[220px]">
+            <!-- Video/Audio Container -->
+            <div id="uploadContainer" class="relative bg-slate-900 rounded-2xl overflow-hidden flex flex-col items-center justify-center border-2 border-dashed border-slate-800 hover:border-indigo-500 transition group h-48 shrink-0">
                 <input type="file" id="videoInput" accept="video/*,audio/*" class="absolute inset-0 opacity-0 cursor-pointer z-10" onchange="handleFileSelect(event)">
-                <div class="text-center p-6 pointer-events-none group-hover:scale-105 transition duration-300">
-                    <div class="w-16 h-16 bg-indigo-500/10 text-indigo-400 rounded-2xl flex items-center justify-center mx-auto mb-3 border border-indigo-500/20 shadow-inner">
-                        <i class="fa-solid fa-cloud-arrow-up text-2xl"></i>
+                <div class="text-center p-4 pointer-events-none">
+                    <div class="w-12 h-12 bg-indigo-500/10 text-indigo-400 rounded-xl flex items-center justify-center mx-auto mb-2 border border-indigo-500/20">
+                        <i class="fa-solid fa-cloud-arrow-up text-xl"></i>
                     </div>
-                    <h3 class="font-semibold text-slate-200 text-base mb-1">Tải lên video hoặc âm thanh</h3>
-                    <p class="text-xs text-slate-400 max-w-xs mx-auto">Kéo thả file vào đây hoặc bấm để chọn (MP4, WEBM, MP3, WAV...)</p>
+                    <h3 class="font-semibold text-slate-200 text-sm mb-0.5">Tải lên Media</h3>
+                    <p class="text-[11px] text-slate-400">Chọn video hoặc âm thanh từ điện thoại</p>
                 </div>
             </div>
 
-            <!-- Video Player Element (Hidden initially until file is loaded) -->
-            <div id="playerWrapper" class="relative flex-1 bg-black rounded-xl overflow-hidden hidden flex flex-col justify-center items-center">
-                <video id="mediaPlayer" class="w-full h-full object-contain max-h-[380px]" controls></video>
+            <!-- Player Element (Hidden initially) -->
+            <div id="playerWrapper" class="relative bg-black rounded-2xl overflow-hidden hidden h-48 shrink-0 flex items-center justify-center shadow-lg">
+                <video id="mediaPlayer" class="w-full h-full object-contain" controls playsinline></video>
             </div>
 
-            <!-- Live Lyric Preview Overlay Box -->
-            <div class="mt-3 bg-slate-900/80 border border-slate-700/80 rounded-xl p-4 text-center relative overflow-hidden shrink-0 shadow-inner">
-                <div class="text-xs uppercase tracking-wider text-indigo-400 font-bold mb-1">Xem trước trực tiếp (Live Preview)</div>
-                <div id="livePreviewCurrent" class="text-lg md:text-xl font-bold text-white min-h-[32px] flex items-center justify-center drop-shadow transition-all duration-200">
+            <!-- Live Lyric Preview Box -->
+            <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 text-center relative overflow-hidden shrink-0 shadow-inner">
+                <div class="text-[10px] uppercase tracking-wider text-indigo-400 font-bold mb-1">Xem trước trực tiếp</div>
+                <div id="livePreviewCurrent" class="text-base font-bold text-white min-h-[28px] flex items-center justify-center px-2">
                     Chưa có dòng nào được đồng bộ
                 </div>
-                <div id="livePreviewNext" class="text-xs text-slate-400 mt-1 truncate">
+                <div id="livePreviewNext" class="text-[11px] text-slate-400 mt-1 truncate px-2">
                     Tiếp theo: -
                 </div>
             </div>
 
-            <!-- Main Timestamping & Playback Controls Bar -->
-            <div class="mt-3 flex flex-wrap items-center justify-between gap-3 bg-slate-900/60 p-3 rounded-xl border border-slate-700/60 shrink-0">
+            <!-- Playback Controls -->
+            <div class="bg-slate-900/80 p-3 rounded-2xl border border-slate-800 shrink-0 space-y-2.5">
+                <div class="flex items-center justify-between text-xs font-mono text-slate-300">
+                    <span id="currentTimeDisplay">00:00.00</span>
+                    <div class="space-x-1">
+                        <button onclick="skipTime(-5)" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-300"><i class="fa-solid fa-backward-step"></i> -5s</button>
+                        <button onclick="skipTime(5)" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-300">+5s <i class="fa-solid fa-forward-step"></i></button>
+                    </div>
+                    <span id="durationDisplay">00:00.00</span>
+                </div>
+
                 <div class="flex items-center space-x-2">
-                    <button onclick="skipTime(-5)" title="Lùi 5 giây" class="w-9 h-9 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg flex items-center justify-center transition text-sm">
-                        <i class="fa-solid fa-backward-step"></i>
-                    </button>
-                    <button onclick="togglePlayPause()" id="playPauseBtn" title="Phát/Tạm dừng (Space)" class="w-11 h-11 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl flex items-center justify-center transition shadow-lg shadow-indigo-600/30">
+                    <button onclick="togglePlayPause()" id="playPauseBtn" class="w-12 h-12 bg-slate-800 hover:bg-slate-700 text-white rounded-2xl flex items-center justify-center transition shrink-0 border border-slate-700">
                         <i class="fa-solid fa-play text-base" id="playPauseIcon"></i>
                     </button>
-                    <button onclick="skipTime(5)" title="Tới 5 giây" class="w-9 h-9 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg flex items-center justify-center transition text-sm">
-                        <i class="fa-solid fa-forward-step"></i>
-                    </button>
-                    <div class="text-xs font-mono text-slate-300 bg-slate-800 px-3 py-2 rounded-lg border border-slate-700">
-                        <span id="currentTimeDisplay">00:00.00</span> / <span id="durationDisplay">00:00.00</span>
-                    </div>
-                </div>
-
-                <!-- Big Capture Button -->
-                <div class="flex-1 flex justify-end">
-                    <button onclick="captureTimestamp()" id="captureBtn" class="w-full sm:w-auto bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold px-6 py-2.5 rounded-xl shadow-lg shadow-emerald-600/30 transition flex items-center justify-center space-x-2 transform active:scale-95">
+                    <!-- Giant Capture Button optimized for thumbs -->
+                    <button onclick="captureTimestamp()" id="captureBtn" class="flex-1 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold h-12 px-4 rounded-2xl shadow-lg shadow-emerald-600/30 transition flex items-center justify-center space-x-2 active:scale-95">
                         <i class="fa-solid fa-bolt text-amber-300"></i>
-                        <span>Bắt Mốc Thời Gian</span>
-                        <kbd class="bg-emerald-700/60 text-emerald-200 text-xs px-2 py-0.5 rounded font-mono ml-1">SPACE</kbd>
+                        <span class="text-sm">Bắt Mốc Thời Gian</span>
                     </button>
                 </div>
             </div>
-
         </div>
 
-        <!-- Right Panel: Lyrics Editor & Timeline (5 cols on lg) -->
-        <div class="lg:col-span-5 flex flex-col bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 overflow-hidden backdrop-blur-sm">
-            
-            <!-- Tabs Header -->
-            <div class="flex items-center justify-between border-b border-slate-700 pb-3 mb-3 shrink-0">
-                <div class="flex space-x-2">
-                    <button onclick="switchTab('editor')" id="tabEditorBtn" class="px-4 py-2 text-xs font-semibold rounded-lg bg-indigo-600 text-white transition shadow-sm">
-                        <i class="fa-solid fa-align-left mr-1.5"></i> Soạn thảo lời bài hát
-                    </button>
-                    <button onclick="switchTab('timeline')" id="tabTimelineBtn" class="px-4 py-2 text-xs font-semibold rounded-lg bg-slate-700 text-slate-300 hover:bg-slate-600 transition">
-                        <i class="fa-solid fa-list-check mr-1.5"></i> Danh sách mốc (<span id="lineCountBadge">0</span>)
-                    </button>
-                </div>
-                <button onclick="clearAllLyrics()" title="Xóa tất cả" class="text-slate-400 hover:text-red-400 p-2 text-xs transition">
-                    <i class="fa-solid fa-trash-can"></i>
+        <!-- VIEW 2: EDITOR (Tab 2) -->
+        <div id="viewEditor" class="absolute inset-0 flex flex-col p-3 space-y-2.5 hidden">
+            <div class="flex items-center justify-between shrink-0">
+                <span class="text-xs text-slate-400 font-medium">Dán lời bài hát (mỗi dòng một câu):</span>
+                <button onclick="loadSampleLyrics()" class="text-xs text-indigo-400 hover:text-indigo-300 font-medium flex items-center space-x-1">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i><span>Lời mẫu</span>
                 </button>
             </div>
+            <textarea id="rawLyricsInput" class="flex-1 bg-slate-900 border border-slate-800 rounded-2xl p-3 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 font-mono resize-none leading-relaxed" placeholder="Dòng 1: Ôi cuộc sống quanh đây...&#10;Dòng 2: Bao niềm vui đong đầy..."></textarea>
+            <button onclick="parseAndLockLyrics()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold py-3 rounded-2xl transition shadow-lg shadow-indigo-600/20 flex items-center justify-center space-x-2 shrink-0">
+                <i class="fa-solid fa-check"></i>
+                <span>Tạo Mốc Thời Gian (<span id="lineCountBadgeMobile">0</span> dòng)</span>
+            </button>
+        </div>
 
-            <!-- Tab 1: Text Editor / Raw Input -->
-            <div id="tabEditorContent" class="flex-1 flex flex-col overflow-hidden">
-                <label class="text-xs text-slate-400 mb-1.5 flex justify-between items-center">
-                    <span>Nhập hoặc dán lời bài hát (mỗi dòng là một câu):</span>
-                    <span class="text-indigo-400 text-[10px] font-medium">Hỗ trợ tự động chia dòng</span>
-                </label>
-                <textarea id="rawLyricsInput" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 font-mono resize-none leading-relaxed" placeholder="Dòng 1: Ôi cuộc sống quanh đây...&#10;Dòng 2: Bao niềm vui đong đầy..."></textarea>
-                <div class="mt-3 flex items-center justify-between">
-                    <button onclick="loadSampleLyrics()" class="text-xs text-indigo-400 hover:text-indigo-300 font-medium underline flex items-center space-x-1">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i><span>Tải lời mẫu ví dụ</span>
-                    </button>
-                    <button onclick="parseAndLockLyrics()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold px-5 py-2 rounded-xl transition shadow-md shadow-indigo-600/20 flex items-center space-x-2">
-                        <i class="fa-solid fa-check"></i>
-                        <span>Tạo Mốc Thời Gian</span>
-                    </button>
+        <!-- VIEW 3: TIMELINE LIST (Tab 3) -->
+        <div id="viewTimeline" class="absolute inset-0 flex flex-col p-3 space-y-2.5 hidden">
+            <div class="flex items-center justify-between shrink-0 px-1">
+                <span class="text-xs text-slate-400">Danh sách các mốc đã tạo:</span>
+                <div class="space-x-2">
+                    <button onclick="resetAllTimestamps()" class="text-[11px] text-amber-400 hover:text-amber-300 font-medium">Đặt lại giờ</button>
+                    <span class="text-slate-600">|</span>
+                    <button onclick="clearAllLyrics()" class="text-[11px] text-red-400 hover:text-red-300 font-medium">Xóa tất cả</button>
                 </div>
             </div>
-
-            <!-- Tab 2: Timeline Timestamp List -->
-            <div id="tabTimelineContent" class="flex-1 flex flex-col overflow-hidden hidden">
-                <div class="flex items-center justify-between mb-2 px-1">
-                    <span class="text-xs text-slate-400">Bấm vào dòng để chọn làm mốc hiện tại:</span>
-                    <button onclick="resetAllTimestamps()" class="text-xs text-amber-400 hover:text-amber-300 font-medium flex items-center space-x-1">
-                        <i class="fa-solid fa-rotate-left"></i><span>Đặt lại giờ</span>
-                    </button>
-                </div>
-                
-                <!-- Scrollable list of lyric lines -->
-                <div id="lyricsListContainer" class="flex-1 overflow-y-auto space-y-2 pr-1">
-                    <!-- Dynamic Items will be rendered here -->
-                    <div class="text-center py-12 text-slate-500 text-sm">
-                        Chưa có dòng lời nào. Hãy nhập văn bản ở tab "Soạn thảo" trước.
-                    </div>
+            
+            <div id="lyricsListContainer" class="flex-1 overflow-y-auto space-y-2 pr-0.5">
+                <div class="text-center py-16 text-slate-500 text-xs px-6">
+                    Chưa có dòng lời nào. Hãy nhập văn bản ở tab "Soạn Thảo" trước.
                 </div>
             </div>
-
         </div>
 
     </main>
 
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="bg-slate-900 border-t border-slate-800 h-16 px-4 flex items-center justify-around shrink-0 z-20">
+        <button onclick="switchTab('player')" id="navPlayerBtn" class="flex flex-col items-center justify-center flex-1 h-full text-indigo-400 transition">
+            <i class="fa-solid fa-play text-lg mb-0.5"></i>
+            <span class="text-[10px] font-medium">Phát & Mốc</span>
+        </button>
+        <button onclick="switchTab('editor')" id="navEditorBtn" class="flex flex-col items-center justify-center flex-1 h-full text-slate-400 hover:text-slate-200 transition">
+            <i class="fa-solid fa-pen-to-square text-lg mb-0.5"></i>
+            <span class="text-[10px] font-medium">Soạn Thảo</span>
+        </button>
+        <button onclick="switchTab('timeline')" id="navTimelineBtn" class="flex flex-col items-center justify-center flex-1 h-full text-slate-400 hover:text-slate-200 transition relative">
+            <i class="fa-solid fa-list-check text-lg mb-0.5"></i>
+            <span class="text-[10px] font-medium">Danh Sách</span>
+            <span id="tabBadgeCount" class="absolute top-2 right-6 bg-indigo-600 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
+        </button>
+    </nav>
+
     <!-- Help Modal -->
-    <div id="helpModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-800 border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
-            <button onclick="closeModal('helpModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
+    <div id="helpModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-sm w-full p-5 shadow-2xl relative space-y-3">
+            <button onclick="closeModal('helpModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center">
+                <i class="fa-solid fa-xmark text-sm"></i>
             </button>
-            <h3 class="text-lg font-bold text-white mb-3 flex items-center space-x-2">
+            <h3 class="text-base font-bold text-white flex items-center space-x-2">
                 <i class="fa-solid fa-circle-info text-indigo-400"></i>
-                <span>Hướng Dẫn Sử Dụng Nhanh</span>
+                <span>Hướng Dẫn Trên Mobile</span>
             </h3>
-            <ul class="space-y-3 text-sm text-slate-300">
+            <ul class="space-y-2.5 text-xs text-slate-300">
                 <li class="flex items-start space-x-2">
-                    <span class="bg-indigo-500/20 text-indigo-400 font-bold rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5">1</span>
-                    <span><b>Tải video/âm thanh:</b> Chọn file media từ máy tính của bạn.</span>
+                    <span class="bg-indigo-500/20 text-indigo-400 font-bold rounded-full w-4 h-4 flex items-center justify-center text-[10px] shrink-0 mt-0.5">1</span>
+                    <span><b>Tải file:</b> Chọn video/âm thanh ở tab <b>Phát & Mốc</b>.</span>
                 </li>
                 <li class="flex items-start space-x-2">
-                    <span class="bg-indigo-500/20 text-indigo-400 font-bold rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5">2</span>
-                    <span><b>Nhập lời:</b> Dán toàn bộ lời bài hát vào tab soạn thảo và nhấn "Tạo Mốc Thời Gian".</span>
+                    <span class="bg-indigo-500/20 text-indigo-400 font-bold rounded-full w-4 h-4 flex items-center justify-center text-[10px] shrink-0 mt-0.5">2</span>
+                    <span><b>Nhập lời:</b> Chuyển sang tab <b>Soạn Thảo</b> dán lời bài hát và bấm tạo mốc.</span>
                 </li>
                 <li class="flex items-start space-x-2">
-                    <span class="bg-indigo-500/20 text-indigo-400 font-bold rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5">3</span>
-                    <span><b>Bắt mốc (Timestamping):</b> Phát video và nhấn phím <b>Spacebar (Cách)</b> hoặc nút "Bắt Mốc Thời Gian" đúng thời điểm câu hát cất lên. Mốc sẽ tự động chuyển sang câu tiếp theo.</span>
+                    <span class="bg-indigo-500/20 text-indigo-400 font-bold rounded-full w-4 h-4 flex items-center justify-center text-[10px] shrink-0 mt-0.5">3</span>
+                    <span><b>Bắt mốc:</b> Quay lại tab <b>Phát & Mốc</b>, bấm nút màu xanh <b>"Bắt Mốc Thời Gian"</b> đúng lúc câu hát cất lên.</span>
                 </li>
                 <li class="flex items-start space-x-2">
-                    <span class="bg-indigo-500/20 text-indigo-400 font-bold rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0 mt-0.5">4</span>
-                    <span><b>Xuất file:</b> Lưu thành phẩm dưới dạng LRC, SRT hoặc JSON để dùng cho phần mềm phát nhạc/video.</span>
+                    <span class="bg-indigo-500/20 text-indigo-400 font-bold rounded-full w-4 h-4 flex items-center justify-center text-[10px] shrink-0 mt-0.5">4</span>
+                    <span><b>Xuất file:</b> Bấm vào nút <b>Xuất</b> ở góc trên bên phải để tải file LRC/SRT.</span>
                 </li>
             </ul>
-            <div class="mt-6 text-right">
-                <button onclick="closeModal('helpModal')" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-xl text-sm font-semibold transition">Đã hiểu</button>
+            <div class="pt-2 text-center">
+                <button onclick="closeModal('helpModal')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-2.5 rounded-xl text-xs font-semibold transition">Đã hiểu</button>
             </div>
         </div>
     </div>
 
     <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-5 right-5 bg-slate-800 border border-slate-700 text-white px-4 py-3 rounded-xl shadow-2xl z-50 flex items-center space-x-3 transform translate-y-20 opacity-0 transition-all duration-300">
-        <div id="toastIcon" class="text-emerald-400 text-lg"><i class="fa-solid fa-circle-check"></i></div>
-        <div id="toastMessage" class="text-sm font-medium">Thông báo thành công</div>
+    <div id="toast" class="fixed top-16 left-1/2 transform -translate-x-1/2 bg-slate-900 border border-slate-700 text-white px-4 py-2.5 rounded-2xl shadow-2xl z-50 flex items-center space-x-2.5 -translate-y-20 opacity-0 transition-all duration-300 max-w-[90vw]">
+        <div id="toastIcon" class="text-emerald-400 text-sm"><i class="fa-solid fa-circle-check"></i></div>
+        <div id="toastMessage" class="text-xs font-medium truncate">Thông báo thành công</div>
     </div>
 
     <script>
         let mediaFile = null;
-        let lyricsData = []; // Array of { id, text, time (in seconds or null) }
+        let lyricsData = [];
         let currentLyricIndex = 0;
         
         const mediaPlayer = document.getElementById('mediaPlayer');
@@ -236,9 +224,9 @@
         const livePreviewNext = document.getElementById('livePreviewNext');
         const rawLyricsInput = document.getElementById('rawLyricsInput');
         const lyricsListContainer = document.getElementById('lyricsListContainer');
-        const lineCountBadge = document.getElementById('lineCountBadge');
+        const lineCountBadgeMobile = document.getElementById('lineCountBadgeMobile');
+        const tabBadgeCount = document.getElementById('tabBadgeCount');
 
-        // Sample lyrics data
         const sampleLyrics = 
 `Từng hạt mưa rơi rớt bên hiên nhà
 Lòng thầm nhớ đến bóng hình ai qua
@@ -253,8 +241,14 @@ Biết bao giờ gặp lại nhau?`;
 
         function loadSampleLyrics() {
             rawLyricsInput.value = sampleLyrics;
+            lineCountBadgeMobile.textContent = sampleLyrics.split('\n').filter(l => l.trim().length > 0).length;
             showToast("Đã tải lời bài hát mẫu!", "success");
         }
+
+        rawLyricsInput.addEventListener('input', () => {
+            const count = rawLyricsInput.value.split('\n').filter(l => l.trim().length > 0).length;
+            lineCountBadgeMobile.textContent = count;
+        });
 
         function handleFileSelect(event) {
             const file = event.target.files[0];
@@ -308,7 +302,7 @@ Biết bao giờ gặp lại nhau?`;
         function parseAndLockLyrics() {
             const text = rawLyricsInput.value.trim();
             if (!text) {
-                showToast("Vui lòng nhập lời bài hát trước khi tạo mốc!", "error");
+                showToast("Vui lòng nhập lời bài hát!", "error");
                 return;
             }
 
@@ -320,62 +314,72 @@ Biết bao giờ gặp lại nhau?`;
             }));
 
             currentLyricIndex = 0;
-            updateLineCountBadge();
+            updateBadges();
             renderLyricsList();
             switchTab('timeline');
-            showToast(`Đã tạo thành công ${lyricsData.length} dòng lời!`, "success");
+            showToast(`Đã tạo ${lyricsData.length} dòng lời!`, "success");
         }
 
         function switchTab(tabName) {
-            const editorBtn = document.getElementById('tabEditorBtn');
-            const timelineBtn = document.getElementById('tabTimelineBtn');
-            const editorContent = document.getElementById('tabEditorContent');
-            const timelineContent = document.getElementById('tabTimelineContent');
+            const viewPlayer = document.getElementById('viewPlayer');
+            const viewEditor = document.getElementById('viewEditor');
+            const viewTimeline = document.getElementById('viewTimeline');
 
-            if (tabName === 'editor') {
-                editorBtn.className = "px-4 py-2 text-xs font-semibold rounded-lg bg-indigo-600 text-white transition shadow-sm";
-                timelineBtn.className = "px-4 py-2 text-xs font-semibold rounded-lg bg-slate-700 text-slate-300 hover:bg-slate-600 transition";
-                editorContent.classList.remove('hidden');
-                timelineContent.classList.add('hidden');
+            const navPlayerBtn = document.getElementById('navPlayerBtn');
+            const navEditorBtn = document.getElementById('navEditorBtn');
+            const navTimelineBtn = document.getElementById('navTimelineBtn');
+
+            // Reset styles
+            [navPlayerBtn, navEditorBtn, navTimelineBtn].forEach(btn => {
+                btn.className = "flex flex-col items-center justify-center flex-1 h-full text-slate-400 hover:text-slate-200 transition relative";
+            });
+
+            viewPlayer.classList.add('hidden');
+            viewEditor.classList.add('hidden');
+            viewTimeline.classList.add('hidden');
+
+            if (tabName === 'player') {
+                viewPlayer.classList.remove('hidden');
+                navPlayerBtn.className = "flex flex-col items-center justify-center flex-1 h-full text-indigo-400 transition relative";
+            } else if (tabName === 'editor') {
+                viewEditor.classList.remove('hidden');
+                navEditorBtn.className = "flex flex-col items-center justify-center flex-1 h-full text-indigo-400 transition relative";
+            } else if (tabName === 'timeline') {
+                viewTimeline.classList.remove('hidden');
+                navTimelineBtn.className = "flex flex-col items-center justify-center flex-1 h-full text-indigo-400 transition relative";
+            }
+        }
+
+        function updateBadges() {
+            const count = lyricsData.length;
+            lineCountBadgeMobile.textContent = count;
+            if (count > 0) {
+                tabBadgeCount.textContent = count;
+                tabBadgeCount.classList.remove('hidden');
             } else {
-                timelineBtn.className = "px-4 py-2 text-xs font-semibold rounded-lg bg-indigo-600 text-white transition shadow-sm";
-                editorBtn.className = "px-4 py-2 text-xs font-semibold rounded-lg bg-slate-700 text-slate-300 hover:bg-slate-600 transition";
-                timelineContent.classList.remove('hidden');
-                editorContent.classList.add('hidden');
+                tabBadgeCount.classList.add('hidden');
             }
         }
-
-        function updateLineCountBadge() {
-            lineCountBadge.textContent = lyricsData.length;
-        }
-
-        document.addEventListener('keydown', (e) => {
-            // Prevent spacebar scrolling when active
-            if (e.code === 'Space' && document.activeElement.tagName !== 'TEXTAREA' && document.activeElement.tagName !== 'INPUT') {
-                e.preventDefault();
-                captureTimestamp();
-            }
-        });
 
         function captureTimestamp() {
             if (!mediaPlayer.src) {
-                showToast("Vui lòng tải file media trước!", "error");
+                showToast("Chưa tải file media!", "error");
+                switchTab('player');
                 return;
             }
             if (lyricsData.length === 0) {
-                showToast("Chưa có dòng lời nào được tạo!", "error");
+                showToast("Chưa có dòng lời nào!", "error");
                 switchTab('editor');
                 return;
             }
             if (currentLyricIndex >= lyricsData.length) {
-                showToast("Đã gán mốc cho tất cả các dòng!", "warning");
+                showToast("Đã gán mốc xong tất cả dòng!", "warning");
                 return;
             }
 
             const currentTime = mediaPlayer.currentTime;
             lyricsData[currentLyricIndex].time = currentTime;
             
-            // Auto advance to next line
             if (currentLyricIndex < lyricsData.length - 1) {
                 currentLyricIndex++;
             }
@@ -390,6 +394,7 @@ Biết bao giờ gặp lại nhau?`;
             if (lyricsData[index].time !== null) {
                 mediaPlayer.currentTime = lyricsData[index].time;
             }
+            switchTab('player');
         }
 
         function updateLineTime(index, timeVal) {
@@ -414,7 +419,7 @@ Biết bao giờ gặp lại nhau?`;
                 currentLyricIndex = Math.max(0, lyricsData.length - 1);
             }
             renderLyricsList();
-            updateLineCountBadge();
+            updateBadges();
             showToast("Đã xóa dòng lời.", "info");
         }
 
@@ -422,16 +427,16 @@ Biết bao giờ gặp lại nhau?`;
             lyricsData.forEach(l => l.time = null);
             currentLyricIndex = 0;
             renderLyricsList();
-            showToast("Đã đặt lại toàn bộ mốc thời gian.", "info");
+            showToast("Đã đặt lại mốc thời gian.", "info");
         }
 
         function clearAllLyrics() {
-            if (confirm("Bạn có chắc chắn muốn xóa tất cả lời bài hát không?")) {
+            if (confirm("Xóa toàn bộ lời bài hát?")) {
                 lyricsData = [];
                 currentLyricIndex = 0;
                 rawLyricsInput.value = "";
                 renderLyricsList();
-                updateLineCountBadge();
+                updateBadges();
                 showToast("Đã làm sạch dữ liệu.", "info");
             }
         }
@@ -439,8 +444,8 @@ Biết bao giờ gặp lại nhau?`;
         function renderLyricsList() {
             if (lyricsData.length === 0) {
                 lyricsListContainer.innerHTML = `
-                    <div class="text-center py-12 text-slate-500 text-sm">
-                        Chưa có dòng lời nào. Hãy nhập văn bản ở tab "Soạn thảo" trước.
+                    <div class="text-center py-16 text-slate-500 text-xs px-6">
+                        Chưa có dòng lời nào. Hãy nhập văn bản ở tab "Soạn Thảo" trước.
                     </div>
                 `;
                 return;
@@ -450,18 +455,17 @@ Biết bao giờ gặp lại nhau?`;
             lyricsData.forEach((item, index) => {
                 const isCurrent = index === currentLyricIndex;
                 const timeStr = item.time !== null ? formatTimeLRC(item.time) : "--:--.--";
-                const activeClass = isCurrent ? "border-indigo-500 bg-indigo-950/40 ring-1 ring-indigo-500/50" : "border-slate-700/60 bg-slate-900/50 hover:border-slate-600";
+                const activeClass = isCurrent ? "border-indigo-500 bg-indigo-950/40 ring-1 ring-indigo-500/50" : "border-slate-800 bg-slate-900/60";
                 
                 html += `
-                    <div class="flex items-center space-x-2 p-2.5 rounded-xl border ${activeClass} transition group">
-                        <span class="text-[11px] font-mono text-slate-500 w-5 text-right">#${index + 1}</span>
-                        <input type="text" value="${timeStr}" onchange="updateLineTime(${index}, this.value)" class="w-20 bg-slate-800 border border-slate-700 text-indigo-300 text-xs font-mono rounded px-2 py-1 text-center focus:outline-none focus:border-indigo-500" title="Click để sửa thời gian">
-                        <input type="text" value="${escapeHtml(item.text)}" onchange="updateLineText(${index}, this.value)" class="flex-1 bg-transparent text-slate-200 text-xs focus:outline-none focus:bg-slate-800/80 px-2 py-1 rounded">
-                        <button onclick="selectLine(${index})" class="text-slate-400 hover:text-indigo-400 p-1 transition" title="Nhảy đến dòng này">
-                            <i class="fa-solid fa-bullseye"></i>
+                    <div class="flex items-center space-x-2 p-2.5 rounded-xl border ${activeClass} transition">
+                        <input type="text" value="${timeStr}" onchange="updateLineTime(${index}, this.value)" class="w-16 bg-slate-800 border border-slate-700 text-indigo-300 text-[11px] font-mono rounded-lg px-1.5 py-1 text-center focus:outline-none">
+                        <input type="text" value="${escapeHtml(item.text)}" onchange="updateLineText(${index}, this.value)" class="flex-1 bg-transparent text-slate-200 text-xs focus:outline-none px-1 py-1 rounded">
+                        <button onclick="selectLine(${index})" class="text-slate-400 hover:text-indigo-400 p-1.5" title="Phát dòng này">
+                            <i class="fa-solid fa-bullseye text-xs"></i>
                         </button>
-                        <button onclick="deleteLine(${index})" class="text-slate-500 hover:text-red-400 p-1 transition" title="Xóa dòng">
-                            <i class="fa-solid fa-xmark"></i>
+                        <button onclick="deleteLine(${index})" class="text-slate-500 hover:text-red-400 p-1.5">
+                            <i class="fa-solid fa-xmark text-xs"></i>
                         </button>
                     </div>
                 `;
@@ -472,11 +476,10 @@ Biết bao giờ gặp lại nhau?`;
         function updateLivePreview(currentTime) {
             if (lyricsData.length === 0) {
                 livePreviewCurrent.textContent = "Chưa có dòng nào được đồng bộ";
-                livePreviewNext.textName = "";
+                livePreviewNext.textContent = "";
                 return;
             }
 
-            // Find current active lyric based on timestamp
             let activeIdx = -1;
             for (let i = 0; i < lyricsData.length; i++) {
                 if (lyricsData[i].time !== null && currentTime >= lyricsData[i].time) {
@@ -488,7 +491,6 @@ Biết bao giờ gặp lại nhau?`;
                 livePreviewCurrent.textContent = lyricsData[activeIdx].text;
                 currentLyricIndex = Math.min(activeIdx + 1, lyricsData.length - 1);
                 
-                // Highlight active item in list if needed or keep user focus
                 const nextText = (activeIdx + 1 < lyricsData.length) ? `Tiếp theo: ${lyricsData[activeIdx + 1].text}` : "Đã đến câu cuối cùng";
                 livePreviewNext.textContent = nextText;
             } else {
@@ -497,9 +499,14 @@ Biết bao giờ gặp lại nhau?`;
             }
         }
 
+        function toggleExportMenu() {
+            const menu = document.getElementById('exportDropdown');
+            menu.classList.toggle('hidden');
+        }
+
         function exportFile(format) {
             if (lyricsData.length === 0) {
-                showToast("Không có dữ liệu để xuất file!", "error");
+                showToast("Không có dữ liệu để xuất!", "error");
                 return;
             }
 
@@ -517,7 +524,6 @@ Biết bao giờ gặp lại nhau?`;
                 fileName += ".srt";
                 fileContent = lyricsData.map((item, idx) => {
                     const start = item.time !== null ? item.time : 0;
-                    // estimate next line start or +3s
                     const nextItem = lyricsData[idx + 1];
                     const end = (nextItem && nextItem.time !== null) ? nextItem.time : start + 3.0;
                     return `${idx + 1}\n${formatTimeSRT(start)} --> ${formatTimeSRT(end)}\n${item.text}\n`;
@@ -567,13 +573,8 @@ Biết bao giờ gặp lại nhau?`;
             return text.replace(/"/g, '&quot;').replace(/'/g, '&#039;');
         }
 
-        function openModal(id) {
-            document.getElementById(id).classList.remove('hidden');
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.add('hidden');
-        }
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
@@ -589,9 +590,9 @@ Biết bao giờ gặp lại nhau?`;
                 toastIcon.innerHTML = '<i class="fa-solid fa-circle-info text-indigo-400"></i>';
             }
 
-            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.remove('-translate-y-20', 'opacity-0');
             setTimeout(() => {
-                toast.classList.add('translate-y-20', 'opacity-0');
+                toast.classList.add('-translate-y-20', 'opacity-0');
             }, 3000);
         }
     </script>
